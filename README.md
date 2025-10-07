@@ -20,7 +20,7 @@ git clone https://github.com/MarioGuilherme/FiapCloudGames.Payments && cd .\Fiap
   ```
   docker-compose up
   ```
-  3 - Acesse https://localhost:8083/swagger/index.html
+  3 - Acesse https://localhost:7190/swagger/index.html
 
 ### 🧪 Executar testes
   1 - Navegue até o diretório dos testes:
