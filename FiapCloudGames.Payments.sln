@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiapCloudGames.Payments.Inf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiapCloudGames.Payments.API", "FiapCloudGames.Payments.API\FiapCloudGames.Payments.API.csproj", "{2CEDA49A-F816-4C70-A8DB-85EFA912D6B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiapCloudGames.Payments.Tests", "FiapCloudGames.Payments.Tests\FiapCloudGames.Payments.Tests.csproj", "{F69E46CE-6118-41AF-9BE7-FD64B501EA0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{2CEDA49A-F816-4C70-A8DB-85EFA912D6B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CEDA49A-F816-4C70-A8DB-85EFA912D6B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CEDA49A-F816-4C70-A8DB-85EFA912D6B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F69E46CE-6118-41AF-9BE7-FD64B501EA0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F69E46CE-6118-41AF-9BE7-FD64B501EA0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F69E46CE-6118-41AF-9BE7-FD64B501EA0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F69E46CE-6118-41AF-9BE7-FD64B501EA0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
