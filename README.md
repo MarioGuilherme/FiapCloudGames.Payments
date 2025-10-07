@@ -37,9 +37,9 @@ git clone https://github.com/MarioGuilherme/FiapCloudGames.Payments && cd .\Fiap
 - ASP.NET Core;
 - Uso de Middlewares e IActionFilters;
 - EntityFrameworkCore;
+- Unit Of Work;
 - SQL SERVER;
 - FluentValidation;
 - Swagger;
 - xUnit junto com Moq;
 - Autenticação JWT;
-- Segurança de Criptografia com BCrypt;
