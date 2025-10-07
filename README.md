@@ -18,7 +18,7 @@ git clone https://github.com/MarioGuilherme/FiapCloudGames.Payments && cd .\Fiap
   
   _(O BANCO DE DADOS É CRIADO AUTOMATICAMENTE QUANDO O PROJETO É INICIADO, SEM PRECISAR EXECUTAR O ```Database-Update```)_:
   ```
-  docker-compose up
+  dotnet run
   ```
   3 - Acesse https://localhost:7190/swagger/index.html
 
