@@ -16,8 +16,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{97543ABC-C3EA-4F60-B986-1788E7C484F5}"
 	ProjectSection(SolutionItems) = preProject
 		payments-api.yaml = payments-api.yaml
+		payments-configmap.yaml = payments-configmap.yaml
+		payments-hpa.yaml = payments-hpa.yaml
+		payments-secret.yaml = payments-secret.yaml
+		payments-service.yaml = payments-service.yaml
 		rabbitmq.yaml = rabbitmq.yaml
-		sqlserver.yaml = sqlserver.yaml
+		payments-sqlserver.yaml = payments-sqlserver.yaml
 	EndProjectSection
 EndProject
 Global
