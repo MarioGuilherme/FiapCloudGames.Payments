@@ -57,7 +57,7 @@ public class OrderCreatedSubscriber(IServiceProvider serviceProvider,
 
     private async Task ProcessOrderCreatedAsync(OrderCreatedEvent orderCreatedEvent)
     {
-        Log.Information("Timer trigger disparada às {DateTime}", DateTime.Now);
+        Log.Information("Subscriber {SubscriberName} iniciado às {DateTime}", nameof(OrderCreatedSubscriber), DateTime.Now);
 
         using IServiceScope scope = _serviceProvider.CreateScope();
         IPaymentService paymentService = scope.ServiceProvider.GetRequiredService<IPaymentService>();
@@ -76,6 +76,6 @@ public class OrderCreatedSubscriber(IServiceProvider serviceProvider,
             Log.Warning("O Pedido de Id {OrderId} foi identificado como fraudulento. Iniciando pedido de cancelamento", orderCreatedEvent.OrderId);
         }
 
-        Log.Information("Pedido de Id {OrderId} a ser processado", orderCreatedEvent.OrderId);
+        Log.Information("Subscriber {SubscriberName} finalizado às {DateTime}", nameof(OrderCreatedSubscriber), DateTime.Now);
     }
 }

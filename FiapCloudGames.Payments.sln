@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.1.11312.151 d18.0
+VisualStudioVersion = 18.1.11312.151
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiapCloudGames.Payments.Domain", "FiapCloudGames.Payments.Domain\FiapCloudGames.Payments.Domain.csproj", "{694C0E5F-585D-48F1-9AC0-245698B95F5D}"
 EndProject
@@ -13,7 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiapCloudGames.Payments.API
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiapCloudGames.Payments.Tests", "FiapCloudGames.Payments.Tests\FiapCloudGames.Payments.Tests.csproj", "{F69E46CE-6118-41AF-9BE7-FD64B501EA0E}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{97543ABC-C3EA-4F60-B986-1788E7C484F5}"
+	ProjectSection(SolutionItems) = preProject
+		payments-api.yaml = payments-api.yaml
+		rabbitmq.yaml = rabbitmq.yaml
+		sqlserver.yaml = sqlserver.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,12 +46,11 @@ Global
 		{F69E46CE-6118-41AF-9BE7-FD64B501EA0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F69E46CE-6118-41AF-9BE7-FD64B501EA0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F69E46CE-6118-41AF-9BE7-FD64B501EA0E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9E7A1F9C-3365-4217-B18B-9A0C035FC3F5}
 	EndGlobalSection
 EndGlobal
