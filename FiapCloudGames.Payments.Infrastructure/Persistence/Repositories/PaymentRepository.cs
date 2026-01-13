@@ -1,4 +1,5 @@
 ﻿using FiapCloudGames.Payments.Domain.Entities;
+using FiapCloudGames.Payments.Domain.Events;
 using FiapCloudGames.Payments.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,8 @@ public class PaymentRepository(FiapCloudGamesPaymentsDbContext dbContext) : IPay
         .AsNoTracking()
         .Where(p => p.UserId == userId)
         .ToListAsync();
+
+    public Task<Payment?> GetByExternalIdTrackingAsync(Guid externalId) => _dbContext.Payments.FirstOrDefaultAsync(p => p.ExternalId == externalId);
 
     public Task<Payment?> GetByIdTrackingAsync(int paymentId) => _dbContext.Payments
         .FirstOrDefaultAsync(p => p.PaymentId == paymentId);

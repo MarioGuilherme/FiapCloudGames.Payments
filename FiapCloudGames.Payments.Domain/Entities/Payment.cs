@@ -9,23 +9,19 @@ public class Payment(int userId, int orderId, decimal total, DateTime? paidAt = 
     public decimal Total { get; private set; } = total;
     public DateTime? PaidAt { get; private set; } = paidAt;
     public DateTime? CanceledAt { get; private set; } = canceledAt;
-    public virtual ICollection<PaymentEvent> PaymentEvents { get; } = [];
 
     public void UpdateExternalId(Guid externalId)
     {
-        PaymentEvents.Add(PaymentEvent.FromPayment(this));
         ExternalId = externalId;
     }
 
     public void MarkAsPaid()
     {
-        PaymentEvents.Add(PaymentEvent.FromPayment(this));
         PaidAt = DateTime.Now;
     }
 
     public void Cancel()
     {
-        PaymentEvents.Add(PaymentEvent.FromPayment(this));
         CanceledAt = DateTime.Now;
     }
 }

@@ -2,8 +2,11 @@
 using FiapCloudGames.Payments.Application.InputModels;
 using FiapCloudGames.Payments.Application.Interfaces;
 using FiapCloudGames.Payments.Application.ViewModels;
+using FiapCloudGames.Payments.Domain.Events;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using Serilog;
 
 namespace FiapCloudGames.Payments.API.Controllers;
 
@@ -35,33 +38,18 @@ public class PaymentsController(IPaymentService paymentService) : ControllerBase
         return Ok(restResponse);
     }
 
-    [HttpPost]
+    [HttpPost("receivePaymentWebhookFunction")]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<CreatedAtActionResult> Create([FromBody] CreatePaymentInputModel inputModel)
+    public async Task<ActionResult> ReceivePaymentWebhookFunction(ReceivedPaymentEvent receivedPaymentEvent, [FromHeader(Name = "X-key-webhook")] string keyPagSeguro)
     {
-        RestResponse<PaymentViewModel> restResponse = await _paymentService.CreateAsync(inputModel);
-        return CreatedAtAction(nameof(GetById), new { paymentId = restResponse.Data!.PaymentId }, restResponse);
-    }
-
-    [HttpPatch("{paymentId}/mark-as-paid")]
-    [Produces("application/json")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<NoContentResult> MarkAsPaid(int paymentId)
-    {
-        await _paymentService.MarkAsPaidAsync(paymentId);
-        return NoContent();
-    }
-
-    [HttpPatch("{paymentId}/cancel")]
-    [Produces("application/json")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<NoContentResult> Cancel(int paymentId)
-    {
-        await _paymentService.CancelByIdAsync(paymentId);
+        if (keyPagSeguro != "minhaChaveSecretaDoPagSeguro") // Aqui garanto que só recebo request da PagSeguro, por ser WebHook
+        {
+            Log.Warning("Tentativa de acesso ao Webhook receivePaymentWebhookFunction inválida pela X-key-webhook");
+            return NotFound();
+        }
+        await _paymentService.ProcessWebHookAsync(receivedPaymentEvent);
         return NoContent();
     }
 }

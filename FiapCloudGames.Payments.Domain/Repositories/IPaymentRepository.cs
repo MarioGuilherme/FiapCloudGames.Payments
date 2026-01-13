@@ -6,5 +6,6 @@ public interface IPaymentRepository
 {
     Task AddAsync(Payment payment);
     Task<List<Payment>> GetAllByUserIdAsync(int userId);
+    Task<Payment?> GetByExternalIdTrackingAsync(Guid externalId);
     Task<Payment?> GetByIdTrackingAsync(int paymentId);
 }

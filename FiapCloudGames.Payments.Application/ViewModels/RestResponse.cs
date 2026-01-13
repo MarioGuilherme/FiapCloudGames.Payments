@@ -2,7 +2,7 @@
 
 public class RestResponse
 {
-    public Dictionary<string, string[]> Errors { get; set; }
+    public Dictionary<string, string[]>? Errors { get; set; } = default;
 
     public static RestResponse Success() => new();
 

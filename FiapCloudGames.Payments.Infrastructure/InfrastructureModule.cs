@@ -1,6 +1,9 @@
-﻿using FiapCloudGames.Payments.Domain.Repositories;
+﻿using FiapCloudGames.Payments.Domain.Messaging;
+using FiapCloudGames.Payments.Domain.Repositories;
+using FiapCloudGames.Payments.Infrastructure.Messaging.RabbitMq;
 using FiapCloudGames.Payments.Infrastructure.Persistence;
 using FiapCloudGames.Payments.Infrastructure.Persistence.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +15,7 @@ public static class InfrastructureModule
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services
+            .AddMessageBroker(configuration)
             .AddDbContext(configuration)
             .AddRepositories()
             .AddUnitOfWork();
@@ -19,9 +23,20 @@ public static class InfrastructureModule
         return services;
     }
 
+    private static IServiceCollection AddMessageBroker(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddHttpContextAccessor();
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.Configure<RabbitMqOptions>(configuration.GetSection("RabbitMQ"));
+        services.AddSingleton<IRabbitMqConnection, RabbitMqConnection>();
+        services.AddSingleton<IEventPublisher, RabbitMqPublisher>();
+
+        return services;
+    }
+
     private static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        string connectionString = Environment.GetEnvironmentVariable("FiapCloudGamesPaymentsConnectionString")!;
+        string connectionString = "Server=(localdb)\\mssqllocaldb;Database=FiapCloudGamesPayments;Trusted_Connection=True;MultipleActiveResultSets=true";// Environment.GetEnvironmentVariable("FiapCloudGamesUsersConnectionString")!;
         services.AddDbContext<FiapCloudGamesPaymentsDbContext>(options => options.UseSqlServer(connectionString));
         return services;
     }

@@ -4,6 +4,7 @@ using FiapCloudGames.Payments.Application.Services;
 using FiapCloudGames.Payments.Application.ViewModels;
 using FiapCloudGames.Payments.Domain.Entities;
 using FiapCloudGames.Payments.Domain.Exceptions;
+using FiapCloudGames.Payments.Domain.Messaging;
 using FiapCloudGames.Payments.Infrastructure.Persistence;
 using Moq;
 
@@ -13,9 +14,10 @@ public class PaymentServiceTests
 {
     private readonly Mock<IUnitOfWork> _unitOfWork = new();
     private readonly Mock<IPagSeguroService> _pagSeguroService = new();
+    private readonly Mock<IEventPublisher> _eventPublisher = new();
     private readonly IPaymentService _paymentService;
 
-    public PaymentServiceTests() => _paymentService = new PaymentService(_unitOfWork.Object, _pagSeguroService.Object);
+    public PaymentServiceTests() => _paymentService = new PaymentService(_unitOfWork.Object, _eventPublisher.Object, _pagSeguroService.Object);
 
     [Fact]
     public async Task GetByIdAsync_ShouldReturnPayment_WhenPaymentFound()
@@ -31,8 +33,8 @@ public class PaymentServiceTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.False(result.Errors?.Any() ?? false);
-        Assert.Equal(payment.PaymentId, result.Data.PaymentId);
+        Assert.False(result.Errors?.Count > 0);
+        Assert.Equal(payment.PaymentId, result?.Data?.PaymentId);
     }
 
     [Fact]
@@ -62,11 +64,10 @@ public class PaymentServiceTests
                       .Returns(Task.CompletedTask);
 
         // Act
-        RestResponse<PaymentViewModel> result = await _paymentService.CreateAsync(input);
+        PaymentViewModel paymentViewModel = await _paymentService.CreateAsync(input);
 
         // Assert
-        Assert.NotNull(result.Data);
-        Assert.Equal(input.OrderId, result.Data.OrderId);
+        Assert.Equal(input.OrderId, paymentViewModel.OrderId);
         _unitOfWork.Verify(u => u.Payments.AddAsync(It.IsAny<Payment>()), Times.Once);
         _unitOfWork.Verify(u => u.CompleteAsync(), Times.Once);
     }

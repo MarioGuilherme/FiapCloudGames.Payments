@@ -19,10 +19,5 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
         builder.Property(p => p.ExternalId).IsRequired(false);
 
         builder.Property(p => p.Total).HasPrecision(18, 2);
-
-        builder.HasMany(p => p.PaymentEvents)
-               .WithOne(pe => pe.Payment)
-               .HasForeignKey(pe => pe.PaymentId)
-               .OnDelete(DeleteBehavior.Cascade);
     }
 }
