@@ -46,7 +46,7 @@ public class OrderCreatedSubscriber(IServiceProvider serviceProvider,
 
             using (LogContext.PushProperty("CorrelationId", ea.BasicProperties.CorrelationId))
             {
-                await ProcessOrderCreatedAsync(orderCreatedEvent);
+                await ProcessOrderCreatedAsync(orderCreatedEvent, ea.BasicProperties.CorrelationId!);
             }
 
             await channel.BasicAckAsync(ea.DeliveryTag, false);
@@ -55,7 +55,7 @@ public class OrderCreatedSubscriber(IServiceProvider serviceProvider,
         await channel.BasicConsumeAsync(QUEUE, false, consumer, cancellationToken: stoppingToken);
     }
 
-    private async Task ProcessOrderCreatedAsync(OrderCreatedEvent orderCreatedEvent)
+    private async Task ProcessOrderCreatedAsync(OrderCreatedEvent orderCreatedEvent, string correlationId)
     {
         Log.Information("Subscriber {SubscriberName} iniciado às {DateTime}", nameof(OrderCreatedSubscriber), DateTime.Now);
 
@@ -66,13 +66,13 @@ public class OrderCreatedSubscriber(IServiceProvider serviceProvider,
         try
         {
             PaymentViewModel paymentViewModel = await paymentService.CreateAsync(createPaymentInputModel);
-            await _eventPublisher.PublishAsync(new OrderPendingPaymentCreatedEvent(orderCreatedEvent.OrderId, orderCreatedEvent.UserId, paymentViewModel.PaymentId), "order.pending.payment.created");
+            await _eventPublisher.PublishAsync(new OrderPendingPaymentCreatedEvent(orderCreatedEvent.OrderId, orderCreatedEvent.UserId, paymentViewModel.PaymentId), "order.pending.payment.created", correlationId);
         }
         catch (PaymentFraudDetectedException)
         {
             await paymentService.CancelByIdAsync(orderCreatedEvent.OrderId);
-            await _eventPublisher.PublishAsync(new SendPendingEmailEvent(orderCreatedEvent.UserId, "Compra fraudulenta", "Sua compra foi identificada como fraudulenta"), "send.pending.email");
-            await _eventPublisher.PublishAsync(new FraudlentOrderDetectedEvent(orderCreatedEvent.OrderId), "fraudlent.order.detected");
+            await _eventPublisher.PublishAsync(new SendPendingEmailEvent(orderCreatedEvent.UserId, "Compra fraudulenta", "Sua compra foi identificada como fraudulenta"), "send.pending.email", correlationId);
+            await _eventPublisher.PublishAsync(new FraudlentOrderDetectedEvent(orderCreatedEvent.OrderId), "fraudlent.order.detected", correlationId);
             Log.Warning("O Pedido de Id {OrderId} foi identificado como fraudulento. Iniciando pedido de cancelamento", orderCreatedEvent.OrderId);
         }
 
