@@ -48,8 +48,6 @@ public class PaymentService(IUnitOfWork unitOfWork, IEventPublisher eventPublish
         Log.Information("Compra verificada com sucesso. Criando pagamento para geração de ExternalId na API do PagSeguro");
         Guid externalId = await _pagSeguroService.CreateFakePaymentAsync();
 
-        Log.Information("ExternalId {externalId} criado com sucesso para o id de pedido {orderId}", externalId.ToString(), inputModel.OrderId);
-
         payment.UpdateExternalId(externalId);
         await _unitOfWork.Payments.AddAsync(payment);
         await _unitOfWork.CompleteAsync();

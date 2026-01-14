@@ -66,6 +66,9 @@ public class OrderCreatedSubscriber(IServiceProvider serviceProvider,
         try
         {
             PaymentViewModel paymentViewModel = await paymentService.CreateAsync(createPaymentInputModel);
+
+            Log.Information("ExternalId {externalId} criado com sucesso para o id de pedido {orderId}", paymentViewModel.ExternalId, paymentViewModel.OrderId);
+
             await _eventPublisher.PublishAsync(new OrderPendingPaymentCreatedEvent(orderCreatedEvent.OrderId, orderCreatedEvent.UserId, paymentViewModel.PaymentId), "order.pending.payment.created", correlationId);
         }
         catch (PaymentFraudDetectedException)
