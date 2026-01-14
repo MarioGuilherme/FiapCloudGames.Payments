@@ -44,3 +44,5 @@ git clone https://github.com/MarioGuilherme/FiapCloudGames.Payments && cd .\Fiap
 - Swagger;
 - xUnit junto com Moq;
 - Autenticação JWT;
+- RabbitMQ;
+- Kubernetes (HPA, ConfigMaps e Secrets).
