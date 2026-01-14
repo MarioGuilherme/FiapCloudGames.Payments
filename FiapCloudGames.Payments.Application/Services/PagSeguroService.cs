@@ -11,7 +11,9 @@ public class PagSeguroService : IPagSeguroService
         Log.Information("Criando pagamento fake numa API de exemplo");
         await Task.Delay(new Random().Next(1, 5)); // Simula o envio para serviço do PagSeguro por exemplo (levando de 1s a 4s
         Log.Information("Pagamento fake criado com sucesso");
-        return Guid.NewGuid();
+        Guid externalId = Guid.NewGuid();
+        Log.Information("ExternalId gerado {externalId}", externalId);
+        return externalId;
     }
 
     public async Task<bool> IsFraudulentAsync(CreatePaymentInputModel inputModel)
